@@ -29,3 +29,26 @@ describe("GET /calculos", () => {
     expect(Array.isArray(resposta.body)).toBe(true);
   });
 });
+
+describe("GET /calculos/:id", () => {
+  test("retorna 200 e o registro correto quando o id existe", async () => {
+  const respostaPost = await request(app)
+    .post("/calculos")
+    .send({ areaHectares: 20, doseRecomendadaPorHectare: 3 });
+
+  const listaAtual = await request(app).get("/calculos");
+  const idRecemCriado = listaAtual.body.length - 1;
+
+  const resposta = await request(app).get(`/calculos/${idRecemCriado}`);
+
+  expect(resposta.status).toBe(200);
+  expect(resposta.body.dosagemTotal).toBe(60);
+});
+
+  test("retorna 404 quando o id não existe", async () => {
+    const resposta = await request(app).get("/calculos/999");
+
+    expect(resposta.status).toBe(404);
+    expect(resposta.body.erro).toBeDefined();
+  });
+});
