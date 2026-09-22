@@ -23,4 +23,15 @@ app.get("/calculos", (req, res) => {
   res.status(200).json(historico);
 });
 
+app.get("/calculos/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const registro = historico[id];
+
+  if (!registro) {
+    return res.status(404).json({ erro: "Cálculo não encontrado" });
+  }
+
+  res.status(200).json(registro);
+});
+
 module.exports = app;
