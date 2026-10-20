@@ -1,39 +1,88 @@
-# Jogo da Velha em C
+# Calculadora de Dosagem Agrícola (API)
 
-Jogo da velha para dois jogadores, no terminal, escrito em C. Desenvolvido como atividade avaliativa da disciplina de Lógica de Programação (Católica SC).
+API REST em Node.js e Express que calcula a **dosagem total** de um insumo a partir da área cultivada e da dose recomendada por hectare.
 
-## Recursos
+> Status: em desenvolvimento. O histórico de cálculos é guardado **em memória** (zera ao reiniciar o servidor).
 
-- Dois jogadores (X e O) alternando jogadas
-- Placar com vitórias de X, vitórias de O e empates
-- Validação de entrada: letras, posições fora do intervalo e casas já ocupadas
-- Opção de jogar novamente ao final de cada partida
-
-## Como jogar
-
-As posições são numeradas de 1 a 9:
+## Como funciona
 
 ```
-1 2 3
-4 5 6
-7 8 9
+dosagemTotal = areaHectares × doseRecomendadaPorHectare
 ```
 
-A cada turno, digite o número da posição desejada.
+Entradas devem ser números positivos. Valores inválidos (texto, zero ou negativo) retornam erro `400`.
 
-## Como compilar e rodar
+## Tecnologias
 
-Requisito: compilador C (por exemplo, gcc).
+- Node.js e Express
+- Jest e Supertest (testes automatizados)
+- GitHub Actions (integração contínua: roda os testes a cada push e pull request na `main`)
+
+## Como rodar
+
+Requisitos: Node.js 20 ou superior.
 
 ```bash
-git clone https://github.com/lucaspeixotoo/tic-tac-toe.git
-cd tic-tac-toe
-gcc main.c -o jogo
-./jogo
+git clone https://github.com/lucaspeixotoo/calculadora-dosagem-agricola.git
+cd calculadora-dosagem-agricola
+npm install
+node src/server.js
 ```
 
-No Windows (MinGW): `gcc main.c -o jogo.exe` e depois `jogo.exe`.
+O servidor sobe em `http://localhost:3000`.
+
+## Endpoints
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| POST | `/calculos` | Calcula e registra uma dosagem |
+| GET | `/calculos` | Lista o histórico de cálculos |
+| GET | `/calculos/:id` | Busca um cálculo pela posição no histórico (começa em 0) |
+
+### Exemplo
+
+```bash
+curl -X POST http://localhost:3000/calculos \
+  -H "Content-Type: application/json" \
+  -d '{"areaHectares": 10, "doseRecomendadaPorHectare": 5}'
+```
+
+Resposta (`201`):
+
+```json
+{ "areaHectares": 10, "doseRecomendadaPorHectare": 5, "dosagemTotal": 50 }
+```
+
+Entrada inválida (`400`):
+
+```json
+{ "erro": "A área e dose informada devem ser valores positivos." }
+```
+
+Cálculo inexistente em `GET /calculos/99` retorna `404`.
+
+## Testes
+
+```bash
+npm test
+```
+
+São 10 testes: regra de cálculo (valores válidos, negativos, zero e texto) e rotas da API (`201`, `400`, `200` e `404`).
 
 ## Estrutura
 
-Todo o código está em `main.c`: tabuleiro (matriz 3x3), verificação de vitória por linhas, colunas e diagonais, detecção de empate e laço de reinício.
+```
+src/
+  calculoDosagem.js   regra de negócio
+  app.js              rotas Express
+  server.js           inicialização do servidor
+tests/
+  calculoDosagem.test.js
+  app.test.js
+.github/workflows/ci.yml
+```
+
+## Próximos passos
+
+- Persistir o histórico em banco de dados (SQL)
+- Cobrir mais unidades de medida
