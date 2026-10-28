@@ -6,7 +6,7 @@ body:
   - type: textarea
     id: problema
     attributes:
-      label: Qual necessidade da ONG isto atende?
+      label: Qual necessidade esta funcionalidade atende?
     validations:
       required: true
   - type: textarea
@@ -14,7 +14,7 @@ body:
     attributes:
       label: Critérios de aceitação
       placeholder: |
-        - [ ] O voluntário consegue...
+        - [ ] O usuário consegue...
         - [ ] O sistema impede...
     validations:
       required: true

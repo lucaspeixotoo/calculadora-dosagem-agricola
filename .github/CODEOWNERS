@@ -1,3 +1,5 @@
-/.github/            @lucaspeixotoo
-/scripts/            @lucaspeixotoo
-**/package.json      @lucaspeixotoo
+/.github/        @lucaspeixotoo
+/src/            @lucaspeixotoo
+/tests/          @lucaspeixotoo
+/docs/           @lucaspeixotoo
+**/package.json  @lucaspeixotoo
