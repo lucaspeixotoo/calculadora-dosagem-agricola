@@ -7,7 +7,7 @@ body:
     id: versao
     attributes:
       label: Versão / ambiente
-      description: 'Aparece no topo do site (ex.: "Ambiente staging · versão v1.2.0")'
+      description: 'Tag ou commit em que o erro aparece (ex.: v0.1.0)'
     validations:
       required: true
   - type: textarea
