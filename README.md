@@ -86,3 +86,8 @@ tests/
 
 - Persistir o histórico em banco de dados (SQL)
 - Cobrir mais unidades de medida
+
+## Histórico de alterações
+
+Repositório utilizado para praticar o fluxo de branches,
+commits e Pull Requests no GitHub.
