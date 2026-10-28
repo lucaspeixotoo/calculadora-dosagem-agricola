@@ -86,9 +86,3 @@ tests/
 
 - Persistir o histórico em banco de dados (SQL)
 - Cobrir mais unidades de medida
-
-<<<<<<< HEAD
-(teste para recusa)
-=======
-(Teste de proteção da branch main)
->>>>>>> origin/main
