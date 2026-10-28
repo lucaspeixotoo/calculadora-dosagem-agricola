@@ -86,3 +86,5 @@ tests/
 
 - Persistir o histórico em banco de dados (SQL)
 - Cobrir mais unidades de medida
+
+(Teste de proteção da branch main)
