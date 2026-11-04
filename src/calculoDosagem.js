@@ -9,5 +9,3 @@ function calcularDosagemTotal (areaHectares, doseRecomendadaPorHectare) {
     return areaHectares * doseRecomendadaPorHectare;
 }
 module.exports = {calcularDosagemTotal};
-
-const variavelNaoUtilizada = 123;
