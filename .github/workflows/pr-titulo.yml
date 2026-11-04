@@ -1,0 +1,29 @@
+
+name: Validar título do PR
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  titulo-pr:
+    name: Validar título do Pull Request
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verificar padrão do título
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if [[ ! "$PR_TITLE" =~ ^(feat|fix|docs|test|refactor|chore|ci):[[:space:]].+ ]]; then
+            echo "Título inválido: $PR_TITLE"
+            echo "Use o padrão: tipo: descrição"
+            echo "Exemplo: ci: configurar integração contínua"
+            exit 1
+          fi
+
+          echo "Título válido: $PR_TITLE"
