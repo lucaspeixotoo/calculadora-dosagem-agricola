@@ -6,8 +6,12 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
-  test:
+  qualidade:
+    name: Qualidade do código
     runs-on: ubuntu-latest
 
     steps:
@@ -17,10 +21,52 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
+          cache: npm
 
       - name: Instalar dependências
-        run: npm install
+        run: npm ci
 
-      - name: Rodar testes
-        run: npm test
+      - name: Verificar ESLint
+        run: npm run lint
+
+      - name: Executar testes e cobertura
+        run: npm run test:coverage
+
+      - name: Executar Smoke Test
+        run: npm run test:smoke
+
+  dependencias:
+    name: Verificar dependências
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Auditar dependências críticas
+        run: npm audit --audit-level=critical
+
+  ci-ok:
+    name: CI OK
+    needs: [qualidade, dependencias]
+    if: always()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Verificar resultado dos jobs
+        run: |
+          if [ "${{ needs.qualidade.result }}" != "success" ] || [ "${{ needs.dependencias.result }}" != "success" ]; then
+            echo "Uma ou mais verificações falharam."
+            exit 1
+          fi
+          echo "Todas as verificações passaram."
