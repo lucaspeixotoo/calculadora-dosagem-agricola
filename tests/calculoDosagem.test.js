@@ -3,7 +3,7 @@ const { calcularDosagemTotal } = require("../src/calculoDosagem");
 describe("calcularDosagemTotal", () => {
   test("calcula corretamente com valores válidos", () => {
     const resultado = calcularDosagemTotal(10, 5);
-    expect(resultado).toBe(99);
+    expect(resultado).toBe(50);
   });
 
   test("lança erro quando área é negativa ou zero", () => {
