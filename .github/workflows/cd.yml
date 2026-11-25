@@ -63,7 +63,7 @@ jobs:
           echo "Pacote gerado: $NOME.zip"
 
       - name: Guardar pacote (o MESMO vai para staging e produção)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pacote
           path: |
