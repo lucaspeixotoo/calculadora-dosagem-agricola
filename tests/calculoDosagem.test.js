@@ -21,4 +21,22 @@ describe("calcularDosagemTotal", () => {
   test("lança erro quando a área é uma string", () => {
     expect(() => calcularDosagemTotal("10", 2)).toThrow();
   });
+
+  // Novos testes - Issue #17
+
+  test("lança erro quando a área é infinita", () => {
+    expect(() => calcularDosagemTotal(Infinity, 5)).toThrow();
+  });
+
+  test("lança erro quando a dose é infinita", () => {
+    expect(() => calcularDosagemTotal(10, Infinity)).toThrow();
+  });
+
+  test("lança erro quando a área é NaN", () => {
+    expect(() => calcularDosagemTotal(NaN, 5)).toThrow();
+  });
+
+  test("lança erro quando a dose é NaN", () => {
+    expect(() => calcularDosagemTotal(10, NaN)).toThrow();
+  });
 });
