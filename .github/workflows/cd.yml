@@ -1,22 +1,3 @@
-# MODELO DE CD — qualquer stack (PGC seções 6 e 9)
-#
-# Copie para o SEU repositório como:  .github/workflows/cd.yml
-# Copie também  scripts/proxima-versao.mjs  da ONGConecta para a mesma pasta no seu repositório.
-# Ajuste as linhas marcadas com  # <-- AJUSTE  (só o job "preparar" depende da sua stack).
-#
-#   merge na main
-#     └─ preparar ..... calcula a versão (SemVer) e gera o PACOTE uma única vez
-#         └─ staging .. pacote candidato disponível para teste (+ site em /staging, se usar Pages)
-#             └─ producao ... AGUARDA APROVAÇÃO (Environment "production")
-#                             cria a tag vX.Y.Z e a Release com notas + pacote anexado (baseline)
-#                             (+ site na raiz, se usar Pages)
-#
-# Produção só acontece quando há versão nova (commit feat/fix desde a última tag).
-#
-# Site estático (HTML/React/Vue/Angular/Flutter web)? Crie a variável de repositório
-#   PUBLICAR_PAGES = true   (Settings -> Secrets and variables -> Actions -> Variables)
-# e ative Settings -> Pages -> branch gh-pages / (root). O build precisa usar caminhos relativos.
-
 name: CD
 
 on:
@@ -44,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # histórico completo: necessário para achar a última tag
+          fetch-depth: 0
 
       - name: Verificar se existe Release publicada
         id: baseline
@@ -58,7 +39,6 @@ jobs:
             echo "primeira=false" >> "$GITHUB_OUTPUT"
           fi
 
-      # O script de versão usa Node, que já vem instalado nos runners.
       - name: Calcular próxima versão (Conventional Commits)
         id: versao
         env:
@@ -126,7 +106,6 @@ jobs:
     needs: [preparar, staging]
     if: needs.preparar.outputs.release == 'true'
     runs-on: ubuntu-latest
-    # Environment "production" com Required reviewers: o job PAUSA até a aprovação (PGC 6.1).
     environment:
       name: production
       url: ${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ needs.preparar.outputs.versao }}

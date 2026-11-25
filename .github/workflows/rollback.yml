@@ -1,13 +1,3 @@
-# MODELO DE ROLLBACK — qualquer stack (PGC 6.4)
-#
-# Copie para o SEU repositório como:  .github/workflows/rollback.yml  (não precisa ajustar nada)
-#
-# Aba Actions -> "Rollback" -> Run workflow -> tag (ex.: v1.2.0).
-# NÃO recompila: usa o pacote anexado à Release daquela tag — a própria baseline.
-#   - marca a Release escolhida como "Latest" (a versão oficial volta a ser ela)
-#   - se PUBLICAR_PAGES = true, republica o site daquela versão
-# Passa pelo mesmo gate de aprovação do Environment "production".
-
 name: Rollback
 
 on:
@@ -19,7 +9,7 @@ on:
         type: string
 
 concurrency:
-  group: cd-refs/heads/main # mesma fila do CD: nunca roda junto com um deploy
+  group: cd-refs/heads/main
   cancel-in-progress: false
 
 permissions:
