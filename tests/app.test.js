@@ -31,10 +31,13 @@ describe("GET /calculos", () => {
 });
 
 describe("GET /calculos/:id", () => {
-  test("retorna 200 e o registro correto quando o id existe", async () => {
+test("retorna 200 e o registro correto quando o id existe", async () => {
   const respostaPost = await request(app)
     .post("/calculos")
     .send({ areaHectares: 20, doseRecomendadaPorHectare: 3 });
+
+  expect(respostaPost.status).toBe(201);
+  expect(respostaPost.body.dosagemTotal).toBe(60);
 
   const listaAtual = await request(app).get("/calculos");
   const idRecemCriado = listaAtual.body.length - 1;
